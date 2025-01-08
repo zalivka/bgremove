@@ -1,6 +1,8 @@
 import numpy as np
 from PIL import Image
 import torch
+torch.backends.nnpack.enabled = False
+
 from torch.autograd import Variable
 from torchvision import transforms
 import torch.nn.functional as F
