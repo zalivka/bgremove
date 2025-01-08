@@ -7,4 +7,10 @@ mkdir -p saved_models
 echo "Downloading model file..."
 curl -L https://testitems.fra1.digitaloceanspaces.com/isnet.pth -o saved_models/isnet.pth
 
-echo "Download complete!" 
+# Create and activate virtual environment
+echo "Creating virtual environment..."
+python3 -m venv venv
+
+# Activate virtual environment
+echo "Activating virtual environment..."
+source venv/bin/activate

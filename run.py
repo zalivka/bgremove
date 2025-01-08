@@ -1,7 +1,7 @@
 import numpy as np
 from PIL import Image
 import torch
-torch.backends.nnpack.enabled = False
+# torch.backends.nnpack.enabled = False
 
 from torch.autograd import Variable
 from torchvision import transforms
@@ -98,7 +98,7 @@ def run_inference(image_path):
     hypar = {} # paramters for inferencing
 
     hypar["model_path"] ="./saved_models" ## load trained weights from this path
-    hypar["restore_model"] = "isnet-general-use.pth" ## name of the to-be-loaded weights
+    hypar["restore_model"] = "isnet.pth" ## name of the to-be-loaded weights
     hypar["interm_sup"] = False ## indicate if activate intermediate feature supervision
 
     ##  choose floating point accuracy --
