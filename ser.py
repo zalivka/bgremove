@@ -22,6 +22,7 @@ def index():
     return "kek"
 
 
+
 @app.route('/bg', methods=['POST'])
 def remove_background():
     # Check if image file is present in request
@@ -43,7 +44,19 @@ def remove_background():
         
         # Process image using existing run_inference
         try:
+            import psutil
+            process = psutil.Process()
+            mem_before = process.memory_info().rss / 1024 / 1024  # Memory in MB
+            cpu_before = psutil.cpu_percent()
+            
             doCut(filepath)
+            
+            mem_after = process.memory_info().rss / 1024 / 1024
+            cpu_after = psutil.cpu_percent()
+            
+            print(f"Memory usage: {mem_after - mem_before:.2f} MB")
+            print(f"CPU usage: {cpu_after - cpu_before:.2f}%")
+            
             # Return the processed image file
             with open('res/applied.png', 'rb') as f:
                 result_image = f.read()
@@ -52,7 +65,6 @@ def remove_background():
             print(e)
             return jsonify({'error': str(e)}), 500
     return jsonify({'error': 'Invalid file type'}), 400
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
     # app.run(debug=True, port=5000)

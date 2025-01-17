@@ -4,6 +4,11 @@ import os
 from run import run_inference 
 
 def doCut(source_img):
+    # Check if image is RGBA and convert to RGB if needed
+    img = Image.open(source_img)
+    if img.mode == 'RGBA':
+        img = img.convert('RGB')
+        img.save(source_img)
     run_inference(source_img)
 
     # Create output directory if it doesn't exist
@@ -24,6 +29,7 @@ def doCut(source_img):
     result = img_array.copy()
     for c in range(3):  # Apply to each RGB channel
         result[:,:,c] = img_array[:,:,c] * mask_array
+
     # Convert to RGBA by adding alpha channel from mask
     rgba = np.zeros((img_array.shape[0], img_array.shape[1], 4), dtype=np.uint8)
     rgba[:,:,:3] = result
