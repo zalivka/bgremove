@@ -3,6 +3,9 @@ import os
 from werkzeug.utils import secure_filename
 from apply_mask import doCut
 from run import run_inference
+import setproctitle
+
+setproctitle.setproctitle("bgremove")
 
 app = Flask(__name__)
 
