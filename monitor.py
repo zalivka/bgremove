@@ -16,7 +16,7 @@ def is_app_alive(url):
     return False
 
 def restart_app():
-    subprocess.Popen(["python", "ser.py"])
+    subprocess.Popen(["nohup", "python", "ser.py", "&"])
 
 def monitor_app():
     url = "http://localhost:5000/bg?ping=true"
