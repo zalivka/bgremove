@@ -1,2 +1,2 @@
 #!/bin/bash
-kill bgremove && kill bgremove-monitor
+pgrep bgremove | xargs kill
