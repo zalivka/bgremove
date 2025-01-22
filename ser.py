@@ -17,13 +17,13 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/ping')
-def index():
+@app.route('/bg', methods=['GET'])
+def ping():
     return "ok", 200
-
 
 @app.route('/bg', methods=['POST'])
 def remove_background():
+    
     # Check if image file is present in request
     if 'image' not in request.files:
         return jsonify({'error': 'No image file provided'}), 400

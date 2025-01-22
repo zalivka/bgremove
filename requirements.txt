@@ -33,4 +33,4 @@ torchvision==0.20.1
 tqdm==4.67.1
 typing_extensions==4.12.2
 urllib3==2.3.0
-psutils==3.3.9
+psutil==6.1.1
