@@ -17,10 +17,9 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/')
+@app.route('/ping')
 def index():
-    return "kek"
-
+    return "ok", 200
 
 
 @app.route('/bg', methods=['POST'])
@@ -65,6 +64,7 @@ def remove_background():
             print(e)
             return jsonify({'error': str(e)}), 500
     return jsonify({'error': 'Invalid file type'}), 400
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
     # app.run(debug=True, port=5000)

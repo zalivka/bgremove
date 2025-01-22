@@ -94,50 +94,71 @@ def predict(net,  inputs_val, shapes_val, hypar, device):
     if device == 'cuda': torch.cuda.empty_cache()
     return (pred_val.detach().cpu().numpy()*255).astype(np.uint8) # it is the mask we need
 
+# Initialize the model once
+hypar = {
+    "model_path": "./saved_models",
+    "restore_model": "isnet.pth",
+    "interm_sup": False,
+    "model_digit": "full",
+    "seed": 0,
+    "cache_size": [1024, 1024],
+    "input_size": [1024, 1024],
+    "crop_size": [1024, 1024],
+    "model": ISNetDIS()
+}
+
+net = build_model(hypar, device)
+
 def run_inference(image_path):
-    hypar = {} # paramters for inferencing
-
-    hypar["model_path"] ="./saved_models" ## load trained weights from this path
-    hypar["restore_model"] = "isnet.pth" ## name of the to-be-loaded weights
-    hypar["interm_sup"] = False ## indicate if activate intermediate feature supervision
-
-    ##  choose floating point accuracy --
-    hypar["model_digit"] = "full" ## indicates "half" or "full" accuracy of float number
-    hypar["seed"] = 0
-
-    hypar["cache_size"] = [1024, 1024] ## cached input spatial resolution, can be configured into different size
-
-    ## data augmentation parameters ---
-    hypar["input_size"] = [1024, 1024] ## mdoel input spatial size, usually use the same value hypar["cache_size"], which means we don't further resize the images
-    hypar["crop_size"] = [1024, 1024] ## random crop size from the input, it is usually set as smaller than hypar["cache_size"], e.g., [920,920] for data augmentation
-
-    hypar["model"] = ISNetDIS()
-
-    net = build_model(hypar, device)
-
-    # image_path = "https://i5.walmartimages.com/asr/43995148-22bf-4836-b6d3-e8f64a73be54.5398297e6f59fc510e0111bc6ff3a02a.jpeg"
-    # image_bytes = BytesIO(requests.get(image_path).content)
-
-    # image_tensor, orig_size = load_image(image_path, hypar) 
     image_tensor, orig_size = load_image(image_path, hypar)
-
     mask = predict(net,image_tensor,orig_size, hypar, device)
-
-    # f, ax = plt.subplots(1,2, figsize = (35,20))
-
-    # ax[0].imshow(np.array(Image.open(image_path))) # Original image
-    # ax[1].imshow(mask, cmap = 'gray') # retouched image
-
-    # ax[0].set_title("Original Image")
-    # ax[1].set_title("Mask")
-
-    # plt.show()
-    # Create res directory if it doesn't exist
     if not os.path.exists('res'):
         os.makedirs('res')
-
-    # Save mask to res folder
     io.imsave('res/mask.png', mask)
 
+# def run_inference(image_path):
+#     hypar = {} # paramters for inferencing
 
-# run_inference("imgs/ru.jpg")
+#     hypar["model_path"] ="./saved_models" ## load trained weights from this path
+#     hypar["restore_model"] = "isnet.pth" ## name of the to-be-loaded weights
+#     hypar["interm_sup"] = False ## indicate if activate intermediate feature supervision
+
+#     ##  choose floating point accuracy --
+#     hypar["model_digit"] = "full" ## indicates "half" or "full" accuracy of float number
+#     hypar["seed"] = 0
+
+#     hypar["cache_size"] = [1024, 1024] ## cached input spatial resolution, can be configured into different size
+
+#     ## data augmentation parameters ---
+#     hypar["input_size"] = [1024, 1024] ## mdoel input spatial size, usually use the same value hypar["cache_size"], which means we don't further resize the images
+#     hypar["crop_size"] = [1024, 1024] ## random crop size from the input, it is usually set as smaller than hypar["cache_size"], e.g., [920,920] for data augmentation
+
+#     hypar["model"] = ISNetDIS()
+
+#     net = build_model(hypar, device)
+
+#     # image_path = "https://i5.walmartimages.com/asr/43995148-22bf-4836-b6d3-e8f64a73be54.5398297e6f59fc510e0111bc6ff3a02a.jpeg"
+#     # image_bytes = BytesIO(requests.get(image_path).content)
+
+#     # image_tensor, orig_size = load_image(image_path, hypar) 
+#     image_tensor, orig_size = load_image(image_path, hypar)
+
+#     mask = predict(net,image_tensor,orig_size, hypar, device)
+
+#     # f, ax = plt.subplots(1,2, figsize = (35,20))
+
+#     # ax[0].imshow(np.array(Image.open(image_path))) # Original image
+#     # ax[1].imshow(mask, cmap = 'gray') # retouched image
+
+#     # ax[0].set_title("Original Image")
+#     # ax[1].set_title("Mask")
+
+#     # plt.show()
+#     # Create res directory if it doesn't exist
+#     if not os.path.exists('res'):
+#         os.makedirs('res')
+
+#     # Save mask to res folder
+#     io.imsave('res/mask.png', mask)
+
+
