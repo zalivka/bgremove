@@ -4,7 +4,9 @@ from werkzeug.utils import secure_filename
 from apply_mask import doCut
 from run import run_inference
 import setproctitle
+import tracemalloc
 
+tracemalloc.start()
 setproctitle.setproctitle("bgremove")
 
 app = Flask(__name__)
@@ -26,8 +28,6 @@ def ping():
 
 @app.route('/bg', methods=['POST'])
 def remove_background():
-    
-    # Check if image file is present in request
     if 'image' not in request.files:
         return jsonify({'error': 'No image file provided'}), 400
     
@@ -58,14 +58,18 @@ def remove_background():
             
             print(f"Memory usage: {mem_after - mem_before:.2f} MB")
             print(f"CPU usage: {cpu_after - cpu_before:.2f}%")
-            
+
             # Return the processed image file
             with open('res/applied.png', 'rb') as f:
                 result_image = f.read()
+    
             return result_image, 200, {'Content-Type': 'image/png'}
         except Exception as e:
             print(e)
             return jsonify({'error': str(e)}), 500
+        
+
+
     return jsonify({'error': 'Invalid file type'}), 400
 
 if __name__ == '__main__':
