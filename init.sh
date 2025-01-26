@@ -20,5 +20,4 @@ source venv/bin/activate
 export TMPDIR=/var/
 pip install -r ./requirements.txt 
 
-chmod +x run.sh
-./run.sh
+source venv/bin/activate && python3 ser.py
