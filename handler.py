@@ -3,7 +3,6 @@ import runpod
 from flask import Flask, request, jsonify
 
 from apply_mask import doCut
-from ser import allowed_file
 
 import requests
 
