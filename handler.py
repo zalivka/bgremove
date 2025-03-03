@@ -1,13 +1,14 @@
 import os
 import runpod
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 
 from apply_mask import doCut
 
 import requests
 
 # If your handler runs inference on a model, load the model here.
-# You will want models to be loaded into memory before starting serverless.
+#!!! # You will want models to be loaded into memory before starting serverless.
+
 
 
 def handler(job):
@@ -17,7 +18,7 @@ def handler(job):
     # Get image URL from job input
     image_url = job_input.get('link')
     if not image_url:
-        return {"error": "No image URL provided"}
+        return jsonify({"error": "No image URL provided"}), 400
         
     # Download image from URL
     try:
@@ -32,14 +33,12 @@ def handler(job):
 
         doCut('imgs/downloaded.jpg')
 
-        with open('res/applied.png', 'rb') as f:
-            result_image = f.read()
+        # Use send_file to return the image file directly
+        return send_file('res/applied.png', mimetype='image/png')
 
-        return result_image, 200, {'Content-Type': 'image/jpg'}
     except Exception as e:
-        return {"error": f"Failed to download image: {str(e)}"}
+        return jsonify({"error": f"Failed to download image: {str(e)}"}), 500
 
 
 
-
-runpod.serverless.start({"handler": handler})
+# runpod.serverless.start({"handler": handler})

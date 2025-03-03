@@ -35,16 +35,7 @@ def test():
             'link': 'https://testitems.fra1.digitaloceanspaces.com/hu.jpg'
         }
     }
-    
-    try:
-        result = handler.handler(job)
-        if isinstance(result, tuple):
-            return result
-        elif isinstance(result, dict) and 'error' in result:
-            return jsonify(result), 400
-        return result
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    return handler.handler(job)
 
    
 @app.route('/bg', methods=['POST'])
