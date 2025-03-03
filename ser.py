@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import os
 from werkzeug.utils import secure_filename
 from apply_mask import doCut
+import handler
 from run import run_inference
 import setproctitle
 import tracemalloc
@@ -26,6 +27,26 @@ def allowed_file(filename):
 def ping():
     return "ok", 200
 
+@app.route('/test', methods=['POST'])
+def test():
+    # Call the handler function with the test image URL
+    job = {
+        'input': {
+            'link': 'https://testitems.fra1.digitaloceanspaces.com/hu.jpg'
+        }
+    }
+    
+    try:
+        result = handler.handler(job)
+        if isinstance(result, tuple):
+            return result
+        elif isinstance(result, dict) and 'error' in result:
+            return jsonify(result), 400
+        return result
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+   
 @app.route('/bg', methods=['POST'])
 def remove_background():
     if 'image' not in request.files:
