@@ -3,7 +3,7 @@ from PIL import Image
 import os
 from run import run_inference 
 
-def doCut(source_img):
+def doCut(source_img, target_img):
     # Check if image is RGBA and convert to RGB if needed
     img = Image.open(source_img)
     if img.mode == 'RGBA':
@@ -37,4 +37,4 @@ def doCut(source_img):
 
     # Convert back to PIL Image and save as PNG with transparency
     result_img = Image.fromarray(rgba)
-    result_img.save('res/applied.png', format='PNG')
+    result_img.save(target_img, format='PNG')

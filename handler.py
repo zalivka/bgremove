@@ -2,7 +2,9 @@ import os
 import runpod
 from flask import Flask, request, jsonify, send_file
 
+from DOupload import upload_to_do
 from apply_mask import doCut
+# from run import run_inference
 
 import requests
 
@@ -31,14 +33,22 @@ def handler(job):
         with open('imgs/downloaded.jpg', 'wb') as f:
             f.write(response.content)
 
-        doCut('imgs/downloaded.jpg')
-
-        # Use send_file to return the image file directly
-        return send_file('res/applied.png', mimetype='image/png')
+        doCut('imgs/downloaded.jpg', 'res/applied.png')
+        return upload_to_do('res/applied.png')
+        
 
     except Exception as e:
         return jsonify({"error": f"Failed to download image: {str(e)}"}), 500
 
+def test():
+    # Call the handler function with the test image URL
+    job = {
+        'input': {
+            'link': 'https://testitems.fra1.digitaloceanspaces.com/piz.jpg'
+        }
+    }
+    return handler(job)
 
-
-# runpod.serverless.start({"handler": handler})
+# test()
+# 
+runpod.serverless.start({"handler": handler})

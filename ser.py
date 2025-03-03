@@ -63,7 +63,7 @@ def remove_background():
             mem_before = process.memory_info().rss / 1024 / 1024  # Memory in MB
             cpu_before = psutil.cpu_percent()
             
-            doCut(filepath)
+            doCut(filepath, 'res/applied.png')
             
             mem_after = process.memory_info().rss / 1024 / 1024
             cpu_after = psutil.cpu_percent()
