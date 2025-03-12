@@ -79,10 +79,32 @@ def remove_background():
         except Exception as e:
             print(e)
             return jsonify({'error': str(e)}), 500
-        
-
-
+    
     return jsonify({'error': 'Invalid file type'}), 400
+
+
+@app.route('/bgtest', methods=['GET'])
+def testcred():
+    # Get JSON data from the request
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No JSON data provided"}), 400
+    
+    # Create a job object from the request data
+    job = {
+        'input': data.get('input', {}),
+        'uploadTo': data.get('uploadTo', {})
+    }
+    
+    # Validate required fields
+    if not job['input'].get('link'):
+        return jsonify({"error": "No image URL provided in input"}), 400
+    
+    if not job['uploadTo']:
+        return jsonify({"error": "No upload credentials provided"}), 400
+        
+    return handler.testHandler(job)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
