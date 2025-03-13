@@ -1,13 +1,11 @@
 import os
 import runpod
 from flask import Flask, request, jsonify, send_file
-
 from DOupload import uploadDO
 from apply_mask import doCut
-
 import requests
-#wtf
-def handler2(job):
+
+def handler(job):
     job_input = job['input']
     image_url = job_input.get('link')
     if not image_url:
@@ -34,7 +32,7 @@ def handler2(job):
 
 
 def testHandler(job):
-    return handler2(job)
+    return handler(job)
 
 
 def test():
@@ -52,8 +50,8 @@ def test():
     }
 
                 
-    return handler2(job)
+    return handler(job)
 
 # test()
 # 
-# runpod.serverless.start({"handler": handler})
+runpod.serverless.start({"handler": handler})
