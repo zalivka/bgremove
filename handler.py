@@ -1,6 +1,6 @@
+import json
 import os
 import runpod
-from flask import Flask, request, jsonify, send_file
 from DOupload import uploadDO
 from apply_mask import doCut
 import requests
@@ -8,12 +8,15 @@ import requests
 def handler(job):
     job_input = job['input']
     image_url = job_input.get('link')
+
+    print("!!!", job.get('uploadTo'))
+
     if not image_url:
-        return jsonify({"error": "No image URL provided"}), 400
+        return json.dumps({"error": "No image URL provided"}), 400
     
     uploadTo = job.get('uploadTo');
     if not uploadTo:
-        return jsonify({"error": "No upload creds"}), 400
+        return json.dumps({"error": "No upload creds"}), 400
     
     try:
         response = requests.get(image_url)
@@ -28,7 +31,7 @@ def handler(job):
         
 
     except Exception as e:
-        return jsonify({"error": f"Failed to download image: {str(e)}"}), 500
+        return json.dumps({"error": f"Failed to download image: {str(e)}"}), 500
 
 
 def testHandler(job):
