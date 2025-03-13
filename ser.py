@@ -83,7 +83,7 @@ def remove_background():
     return jsonify({'error': 'Invalid file type'}), 400
 
 
-@app.route('/bgtest', methods=['GET'])
+@app.route('/bgtest', methods=['POST'])
 def testcred():
     # Get JSON data from the request
     data = request.get_json()
@@ -106,7 +106,7 @@ def testcred():
     return handler.testHandler(job)
 
 
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', port=5000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5001)
     # app.run(debug=True, port=5000)
     

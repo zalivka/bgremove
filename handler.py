@@ -9,12 +9,12 @@ def handler(job):
     job_input = job['input']
     image_url = job_input.get('link')
 
-    print("!!!", job.get('uploadTo'))
+    print("!!!", json.dumps(job))
 
     if not image_url:
         return json.dumps({"error": "No image URL provided"}), 400
     
-    uploadTo = job.get('uploadTo');
+    uploadTo = job_input.get('uploadTo');
     if not uploadTo:
         return json.dumps({"error": "No upload creds"}), 400
     
@@ -42,14 +42,14 @@ def test():
     # Call the handler function with the test image URL
     job = {
         'input': {
-            'link': 'https://testitems.fra1.digitaloceanspaces.com/piz.jpg'
-        },
-        'uploadTo': {'region_name': 'fra1', 
+            'link': 'https://testitems.fra1.digitaloceanspaces.com/piz.jpg',
+            'uploadTo': {'region_name': 'fra1', 
                          'endpoint_url': 'https://fra1.digitaloceanspaces.com', 
                          'aws_access_key_id': 'DO00A68ZPATT2M7W6EJF', 
                          'aws_secret_access_key': '368lcCHa3Xff7LtmN1+Y8tc9p+Pw/86FwpZ507qx2V8', 
                          'bucket': 'rmbg', 
                          'object_name': 'lel2.jpg'}
+        },
     }
 
                 
