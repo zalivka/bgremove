@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, send_file
 from DOupload import uploadDO
 from apply_mask import doCut
 import requests
-
+ 
 def handler(job):
     job_input = job['input']
     image_url = job_input.get('link')
