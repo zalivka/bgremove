@@ -6,7 +6,7 @@ from DOupload import uploadDO
 from apply_mask import doCut
 
 import requests
-
+#wtf
 def handler2(job):
     job_input = job['input']
     image_url = job_input.get('link')
